@@ -72,3 +72,43 @@ numpy   2.5.1
 pip     24.2
 
 ```
+
+### to get vscode password of your own user 
+
+```
+ cat   ~/.config/code-server/config.yaml 
+bind-addr: 0.0.0.0:8080
+auth: password
+
+```
+
+### python boto3 the aws SDK module 
+
+```
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ pip3 install boto3
+
+
+===>
+ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ pip3 list
+Package         Version
+--------------- -----------
+boto3           1.43.51
+botocore        1.43.51
+jmespath        1.1.0
+numpy           2.5.1
+pip             24.2
+python-dateutil 2.9.0.post0
+s3transfer      0.19.1
+six             1.17.0
+urllib3         2.7.0
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ python
+Python 3.13.14 (main, Jun 16 2026, 00:00:00) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+>>> import boto3
+>>> dir(boto3)
+['DEFAULT_SESSION', 'NullHandler', 'Session', '__author__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', '__version__', '_get_default_session', '_warn_deprecated_python', 'client', 'compat', 'docs', 'exceptions', 'logging', 'resource', 'resources', 'session', 'set_stream_logger', 'setup_default_session', 'utils']
+>>> exit;
+Use exit() or Ctrl-D (i.e. EOF) to exit
+>>> 
+```

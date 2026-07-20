@@ -7,3 +7,7 @@
 
 - [clickTO](https://github.com/redashu/updating_neurons.git)
 
+### Verify or download python modules / lib details 
+
+- [click_to_Go](https://pypi.org/search/?q=numpy)
+
