@@ -4,3 +4,6 @@
 
 <img src="llm1.png">
 
+### Access model options 
+
+<img src="llm2.png">
