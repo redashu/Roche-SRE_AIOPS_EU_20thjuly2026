@@ -112,3 +112,41 @@ Type "help", "copyright", "credits" or "license" for more information.
 Use exit() or Ctrl-D (i.e. EOF) to exit
 >>> 
 ```
+
+### to use boto3 for service lets set the default aws region 
+
+```
+ aws configure
+AWS Access Key ID [None]: AWS Secret Access Key [None]: Default region name [None]: eu-central-1
+Default output format [None]: (ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ aws s3 ls
+2026-04-27 13:28:42 ashutoshh-tf-test-bucket
+2026-05-26 04:18:17 cf-templates-p5tewb2jg6i-ap-south-1
+2026-04-22 03:17:02 delvex-software-center
+2026-06-25 04:35:10 demobucketdatahub
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+
+
+
+
+
+
+
+
+
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ~]$ python3
+Python 3.13.14 (main, Jun 16 2026, 00:00:00) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+>>> 
+>>> import boto3
+>>> client = boto3.client("bedrock")
+>>> 
+
+```
+
