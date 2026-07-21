@@ -100,3 +100,8 @@ list_tags_for_resource
 >>> models=aws_bedrock.list_foundation_models()
 
 ```
+
+## for Model interacting we need to have some details 
+
+<img src="ml2.png">
+
