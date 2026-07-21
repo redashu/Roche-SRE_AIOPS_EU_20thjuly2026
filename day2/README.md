@@ -105,3 +105,17 @@ list_tags_for_resource
 
 <img src="ml2.png">
 
+## understanding python manual code base to interact LLM 
+
+```
+import boto3
+>>> model_id="amazon.nova-2-lite-v1:0"
+>>> region="eu-central-1"
+>>> c=boto3.client("bedrock-runtime")
+>>> c1=boto3.client(service_name="bedrock-runtime",region_name=region)
+>>> dir(c1)
+['_PY_TO_OP_NAME', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__firstlineno__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__static_attributes__', '__str__', '__subclasshook__', '__weakref__', '_cache', '_client_config', '_convert_to_request_dict', '_emit_api_params', '_endpoint', '_exceptions', '_exceptions_factory', '_get_credentials', '_get_waiter_config', '_load_exceptions', '_loader', '_make_api_call', '_make_request', '_register_handlers', '_request_signer', '_resolve_endpoint_ruleset', '_response_parser', '_ruleset_resolver', '_serializer', '_service_model', '_user_agent_creator', 'apply_guardrail', 'can_paginate', 'close', 'converse', 'converse_stream', 'count_tokens', 'exceptions', 'generate_presigned_url', 'get_async_invoke', 'get_paginator', 'get_waiter', 'invoke_guardrail_checks', 'invoke_model', 'invoke_model_with_response_stream', 'list_async_invokes', 'meta', 'start_async_invoke', 'waiter_names']
+>>> c1.invoke_model(modelID=model_id,)
+
+
+```
