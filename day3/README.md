@@ -11,3 +11,7 @@
 ### chatapp with LLM and conversation Memomry 
 
 <img src="llmchat.png">
+
+### understanding aws-bedrock conversation API 
+
+<img src="llmapi.png">
