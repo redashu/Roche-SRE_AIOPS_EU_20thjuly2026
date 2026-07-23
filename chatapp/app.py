@@ -1,4 +1,3 @@
-import json
 import boto3
 from botocore.exceptions import ClientError
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -6,82 +5,167 @@ from flask import Flask, render_template, request, redirect, url_for, session
 # ----------------------------------------------------
 # Configuration
 # ----------------------------------------------------
+
 REGION = "ap-south-1"
 MODEL_ID = "meta.llama3-8b-instruct-v1:0"
 
 app = Flask(__name__)
-app.secret_key = "change-this-to-a-random-secret-key"  # needed for session storage
+app.secret_key = "change-this-to-a-random-secret-key"
 
 # ----------------------------------------------------
-# Create Bedrock Runtime Client
+# Bedrock Client
 # ----------------------------------------------------
+
 client = boto3.client(
     service_name="bedrock-runtime",
     region_name=REGION
 )
 
+# ----------------------------------------------------
+# Converse API
+# ----------------------------------------------------
 
-def call_bedrock_llama(user_prompt):
-    """Send a prompt to the Bedrock Llama model and return the generated text."""
-
-    formatted_prompt = f"""
-<|begin_of_text|><|start_header_id|>user<|end_header_id|>
-{user_prompt}
-<|eot_id|>
-<|start_header_id|>assistant<|end_header_id|>
-"""
-
-    request_body = {
-        "prompt": formatted_prompt,
-        "max_gen_len": 512,
-        "temperature": 0.2,
-        "top_p": 0.9
-    }
+def call_bedrock(messages):
 
     try:
-        response = client.invoke_model(
+
+        response = client.converse(
+
             modelId=MODEL_ID,
-            body=json.dumps(request_body),
-            accept="application/json",
-            contentType="application/json"
+
+            system=[
+                {
+                    "text": "You are a helpful AI assistant."
+                }
+            ],
+
+            messages=messages,
+
+            inferenceConfig={
+
+                "temperature":0.2,
+
+                "topP":0.9,
+
+                "maxTokens":512
+
+            }
+
         )
 
-        response_body = json.loads(response["body"].read())
-        return response_body["generation"].strip()
+        return response["output"]["message"]
 
     except ClientError as e:
-        return f"AWS Error: {e.response['Error']['Message']}"
 
-    except Exception as e:
-        return f"Unexpected Error: {e}"
+        return {
 
+            "role":"assistant",
 
-@app.route("/", methods=["GET"])
+            "content":[
+
+                {
+
+                    "text":f"AWS Error : {e.response['Error']['Message']}"
+
+                }
+
+            ]
+
+        }
+
+# ----------------------------------------------------
+# Home
+# ----------------------------------------------------
+
+@app.route("/")
 def index():
-    history = session.get("history", [])
-    return render_template("index.html", history=history)
 
+    messages = session.get("messages", [])
+
+    history = []
+
+    for msg in messages:
+
+        history.append({
+
+            "role":"user" if msg["role"]=="user" else "ai",
+
+            "text":msg["content"][0]["text"]
+
+        })
+
+    return render_template(
+
+        "index.html",
+
+        history=history
+
+    )
+
+# ----------------------------------------------------
+# Chat
+# ----------------------------------------------------
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_prompt = request.form.get("prompt", "").strip()
 
-    if user_prompt:
-        ai_response = call_bedrock_llama(user_prompt)
+    prompt = request.form.get("prompt","").strip()
 
-        history = session.get("history", [])
-        history.append({"role": "user", "text": user_prompt})
-        history.append({"role": "ai", "text": ai_response})
-        session["history"] = history
+    if not prompt:
+
+        return redirect(url_for("index"))
+
+    messages = session.get("messages", [])
+
+    user_message = {
+
+        "role":"user",
+
+        "content":[
+
+            {
+
+                "text":prompt
+
+            }
+
+        ]
+
+    }
+
+    messages.append(user_message)
+
+    assistant_message = call_bedrock(messages)
+
+    messages.append(assistant_message)
+
+    session["messages"] = messages
 
     return redirect(url_for("index"))
 
+# ----------------------------------------------------
+# Clear
+# ----------------------------------------------------
 
 @app.route("/clear", methods=["POST"])
 def clear():
-    session.pop("history", None)
+
+    session.clear()
+
     return redirect(url_for("index"))
 
+# ----------------------------------------------------
+# Main
+# ----------------------------------------------------
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+
+    app.run(
+
+        debug=True,
+
+        host="0.0.0.0",
+
+        port=5000
+
+    )

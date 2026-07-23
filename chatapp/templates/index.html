@@ -1,116 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Bedrock Llama Chat</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            background: #f5f5f5;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .chat-box {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            min-height: 300px;
-            max-height: 500px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-        }
-        .msg {
-            margin: 10px 0;
-            padding: 10px 14px;
-            border-radius: 8px;
-            line-height: 1.4;
-            white-space: pre-wrap;
-        }
-        .user {
-            background: #d1e7ff;
-            text-align: right;
-            margin-left: 60px;
-        }
-        .ai {
-            background: #e6e6e6;
-            margin-right: 60px;
-        }
-        .label {
-            font-weight: bold;
-            font-size: 0.85em;
-            color: #555;
-            display: block;
-            margin-bottom: 4px;
-        }
-        form {
-            display: flex;
-            margin-top: 15px;
-            gap: 8px;
-        }
-        input[type=text] {
-            flex: 1;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 1em;
-        }
-        button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            background: #007bff;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .clear-btn {
-            background: #999;
-        }
-        .clear-btn:hover {
-            background: #666;
-        }
-        .footer-row {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 8px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bedrock Llama Chat</title>
+<style>
+    :root {
+        --bg-grad-1: #6a5af9;
+        --bg-grad-2: #d66efd;
+        --user-bubble: linear-gradient(135deg, #6a5af9, #8b7bfa);
+        --ai-bubble: #ffffff;
+        --text-dark: #24272f;
+        --text-light: #6b7280;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 720px;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(18px);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 85vh;
+    }
+
+    header {
+        padding: 18px 24px;
+        background: rgba(255, 255, 255, 0.35);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    header .title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    header .logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6a5af9, #d66efd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    header h1 {
+        font-size: 1.1rem;
+        margin: 0;
+        color: var(--text-dark);
+    }
+
+    header p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: var(--text-light);
+    }
+
+    form.clear-form button {
+        border: none;
+        background: rgba(255, 255, 255, 0.6);
+        color: var(--text-dark);
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    form.clear-form button:hover {
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .chat-box {
+        flex: 1;
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .chat-box::-webkit-scrollbar {
+        width: 6px;
+    }
+    .chat-box::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+    }
+
+    .row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+    }
+
+    .row.user {
+        flex-direction: row-reverse;
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: white;
+    }
+
+    .avatar.user { background: #6a5af9; }
+    .avatar.ai { background: #d66efd; }
+
+    .bubble {
+        max-width: 72%;
+        padding: 12px 16px;
+        border-radius: 16px;
+        line-height: 1.45;
+        font-size: 0.93rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+
+    .row.user .bubble {
+        background: var(--user-bubble);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .row.ai .bubble {
+        background: var(--ai-bubble);
+        color: var(--text-dark);
+        border-bottom-left-radius: 4px;
+    }
+
+    .empty-state {
+        margin: auto;
+        text-align: center;
+        color: var(--text-light);
+    }
+
+    .empty-state .emoji {
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+    }
+
+    footer {
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.4);
+        border-top: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .input-form {
+        display: flex;
+        gap: 10px;
+    }
+
+    .input-form input[type="text"] {
+        flex: 1;
+        padding: 12px 16px;
+        border-radius: 30px;
+        border: none;
+        outline: none;
+        font-size: 0.95rem;
+        background: rgba(255, 255, 255, 0.85);
+        color: var(--text-dark);
+    }
+
+    .input-form button {
+        border: none;
+        background: linear-gradient(135deg, #6a5af9, #8b7bfa);
+        color: white;
+        padding: 0 22px;
+        border-radius: 30px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .input-form button:hover {
+        transform: translateY(-1px);
+        opacity: 0.92;
+    }
+
+    @media (max-width: 480px) {
+        .app { height: 92vh; border-radius: 14px; }
+        .bubble { max-width: 85%; }
+    }
+</style>
 </head>
 <body>
-    <h2>Amazon Bedrock - Meta Llama 3 Chat</h2>
-
-    <div class="chat-box">
-        {% for msg in history %}
-            {% if msg.role == "user" %}
-                <div class="msg user">
-                    <span class="label">You</span>
-                    {{ msg.text }}
+    <div class="app">
+        <header>
+            <div class="title">
+                <div class="logo">🦙</div>
+                <div>
+                    <h1>Bedrock Llama Chat</h1>
+                    <p>Meta Llama 3 · via Amazon Bedrock</p>
                 </div>
-            {% else %}
-                <div class="msg ai">
-                    <span class="label">AI</span>
-                    {{ msg.text }}
+            </div>
+            <form class="clear-form" action="/clear" method="post">
+                <button type="submit">Clear chat</button>
+            </form>
+        </header>
+
+        <div class="chat-box" id="chatBox">
+            {% if not history %}
+                <div class="empty-state">
+                    <div class="emoji">💬</div>
+                    <div>Start the conversation below</div>
                 </div>
             {% endif %}
-        {% endfor %}
+
+            {% for msg in history %}
+                {% set role = msg.role %}
+                {% set text = msg.content[0].text %}
+                <div class="row {{ 'user' if role == 'user' else 'ai' }}">
+                    <div class="avatar {{ 'user' if role == 'user' else 'ai' }}">
+                        {{ '🧑' if role == 'user' else '🦙' }}
+                    </div>
+                    <div class="bubble">{{ text }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <footer>
+            <form class="input-form" action="/chat" method="post">
+                <input
+                    type="text"
+                    name="prompt"
+                    placeholder="Ask a follow-up question..."
+                    autocomplete="off"
+                    required
+                    autofocus
+                >
+                <button type="submit">Send</button>
+            </form>
+        </footer>
     </div>
 
-    <form action="/chat" method="post">
-        <input type="text" name="prompt" placeholder="Type your message..." autocomplete="off" required autofocus>
-        <button type="submit">Send</button>
-    </form>
-
-    <div class="footer-row">
-        <form action="/clear" method="post">
-            <button type="submit" class="clear-btn">Clear Chat</button>
-        </form>
-    </div>
+    <script>
+        // Auto-scroll to the latest message on load
+        var chatBox = document.getElementById("chatBox");
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
 </body>
 </html>
