@@ -18,3 +18,8 @@ ashu-ui-app/
 ```
  pip3 install -r requirements.txt 
 ```
+
+### LLM copilot app with tools 
+
+<img src="tool1.png">
+
