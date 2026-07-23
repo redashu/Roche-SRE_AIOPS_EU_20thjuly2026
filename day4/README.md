@@ -58,3 +58,23 @@ ip-192-168-54-163.ec2.internal   Ready    <none>   2d9h   v1.34.9-eks-8f14419
 
 
 ```
+
+### python lib to interact with system commands / env 
+
+```
+ python3
+Python 3.13.14 (main, Jun 16 2026, 00:00:00) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+>>> import  os,subprocess
+>>> os.system("kubectl get po")
+NAME                          READY   STATUS    RESTARTS   AGE
+ashuwebapp-5c7fbfc64b-4hmk7   1/1     Running   0          20h
+0
+>>> dir(subprocess)
+['CalledProcessError', 'CompletedProcess', 'DEVNULL', 'PIPE', 'Popen', 'STDOUT', 'SubprocessError', 'TimeoutExpired', '_HAVE_POSIX_SPAWN_CLOSEFROM', '_PIPE_BUF', '_PopenSelector', '_USE_POSIX_SPAWN', '_USE_VFORK', '__all__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '_active', '_args_from_interpreter_flags', '_can_fork_exec', '_cleanup', '_del_safe', '_fork_exec', '_mswindows', '_optim_args_from_interpreter_flags', '_text_encoding', '_time', '_use_posix_spawn', 'builtins', 'call', 'check_call', 'check_output', 'contextlib', 'errno', 'fcntl', 'getoutput', 'getstatusoutput', 'io', 'list2cmdline', 'locale', 'os', 'run', 'select', 'selectors', 'signal', 'sys', 'threading', 'time', 'types', 'warnings']
+>>> subprocess.getoutput('kubectl get po')
+'NAME                          READY   STATUS    RESTARTS   AGE\nashuwebapp-5c7fbfc64b-4hmk7   1/1     Running   0          20h'
+>>> 
+
+```
