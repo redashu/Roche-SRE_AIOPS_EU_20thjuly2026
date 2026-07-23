@@ -5,7 +5,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 # ----------------------------------------------------
 # Configuration
 # ----------------------------------------------------
-
 REGION = "ap-south-1"
 MODEL_ID = "meta.llama3-8b-instruct-v1:0"
 
@@ -13,159 +12,92 @@ app = Flask(__name__)
 app.secret_key = "change-this-to-a-random-secret-key"
 
 # ----------------------------------------------------
-# Bedrock Client
+# Bedrock Runtime Client
 # ----------------------------------------------------
-
 client = boto3.client(
     service_name="bedrock-runtime",
     region_name=REGION
 )
 
-# ----------------------------------------------------
-# Converse API
-# ----------------------------------------------------
 
+# ----------------------------------------------------
+# Converse API - now takes the FULL conversation so
+# the model can see previous turns and handle
+# follow-up questions correctly.
+# ----------------------------------------------------
 def call_bedrock(messages):
-
     try:
-
         response = client.converse(
-
             modelId=MODEL_ID,
-
-            system=[
-                {
-                    "text": "You are a helpful AI assistant."
-                }
-            ],
-
             messages=messages,
-
             inferenceConfig={
-
-                "temperature":0.2,
-
-                "topP":0.9,
-
-                "maxTokens":512
-
+                "temperature": 0.2,
+                "topP": 0.9,
+                "maxTokens": 512
             }
-
         )
-
-        return response["output"]["message"]
+        return response["output"]["message"]["content"][0]["text"]
 
     except ClientError as e:
+        return f"AWS Error: {e.response['Error']['Message']}"
 
-        return {
+    except Exception as e:
+        return f"Unexpected Error: {e}"
 
-            "role":"assistant",
-
-            "content":[
-
-                {
-
-                    "text":f"AWS Error : {e.response['Error']['Message']}"
-
-                }
-
-            ]
-
-        }
 
 # ----------------------------------------------------
 # Home
 # ----------------------------------------------------
-
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
+    history = session.get("history", [])
+    return render_template("index.html", history=history)
 
-    messages = session.get("messages", [])
-
-    history = []
-
-    for msg in messages:
-
-        history.append({
-
-            "role":"user" if msg["role"]=="user" else "ai",
-
-            "text":msg["content"][0]["text"]
-
-        })
-
-    return render_template(
-
-        "index.html",
-
-        history=history
-
-    )
 
 # ----------------------------------------------------
 # Chat
 # ----------------------------------------------------
-
 @app.route("/chat", methods=["POST"])
 def chat():
+    user_prompt = request.form.get("prompt", "").strip()
 
-    prompt = request.form.get("prompt","").strip()
+    if user_prompt:
+        # Full conversation kept in Bedrock Converse message format,
+        # so it doubles as both the API payload and the display history.
+        history = session.get("history", [])
 
-    if not prompt:
+        history.append({
+            "role": "user",
+            "content": [{"text": user_prompt}]
+        })
 
-        return redirect(url_for("index"))
+        ai_response = call_bedrock(history)
 
-    messages = session.get("messages", [])
+        history.append({
+            "role": "assistant",
+            "content": [{"text": ai_response}]
+        })
 
-    user_message = {
-
-        "role":"user",
-
-        "content":[
-
-            {
-
-                "text":prompt
-
-            }
-
-        ]
-
-    }
-
-    messages.append(user_message)
-
-    assistant_message = call_bedrock(messages)
-
-    messages.append(assistant_message)
-
-    session["messages"] = messages
+        session["history"] = history
 
     return redirect(url_for("index"))
 
-# ----------------------------------------------------
-# Clear
-# ----------------------------------------------------
 
+# ----------------------------------------------------
+# Clear Chat
+# ----------------------------------------------------
 @app.route("/clear", methods=["POST"])
 def clear():
-
-    session.clear()
-
+    session.pop("history", None)
     return redirect(url_for("index"))
 
-# ----------------------------------------------------
-# Main
-# ----------------------------------------------------
 
+# ----------------------------------------------------
+# Run
+# ----------------------------------------------------
 if __name__ == "__main__":
-
     app.run(
-
         debug=True,
-
         host="0.0.0.0",
-
         port=5000
-
     )
