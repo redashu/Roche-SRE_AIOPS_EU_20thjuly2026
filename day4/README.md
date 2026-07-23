@@ -78,3 +78,40 @@ ashuwebapp-5c7fbfc64b-4hmk7   1/1     Running   0          20h
 >>> 
 
 ```
+### testing tool selector 
+
+```
+s]$ ls
+ashu-ui-app              bedrock-converse.py  llm_chat.py         my-chat-app   nova_model.py        tools
+bedrock-converse-mem.py  invoke.py            model_inference.py  nova-chat.py  test-aws-bedrock.py
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ ls tools/
+get_pods_details.py  tool_selector.py
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ python3 tools/tool_selector.py 
+
+Ask : can you give me all running pods 
+
+LLM Response : get_all_pods
+
+Selected Tool : get_all_pods
+
+Ask : create pod using python code and run it as well
+
+LLM Response : NO_TOOL
+
+Selected Tool : NO_TOOL
+
+Ask : show me only default ns pods 
+
+LLM Response : get_all_pods
+
+Selected Tool : get_all_pods
+
+Ask : show me secret of kube-system ns 
+
+LLM Response : NO_TOOL
+
+Selected Tool : NO_TOOL
+
+Ask : exit
+
+```
