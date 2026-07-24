@@ -1,10 +1,24 @@
+import json
 import boto3
+import os
+import sys
 from botocore.exceptions import ClientError
 
-# --------------------------------------------------
-# Configuration
-# --------------------------------------------------
+# ----------------------------------------------------
+# Add Project Root
+# ----------------------------------------------------
+sys.path.append(
+    os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..")
+    )
+)
 
+from tools.tool_selector import select_tool
+from tools.all_pods import get_all_pods
+
+# ----------------------------------------------------
+# Configuration
+# ----------------------------------------------------
 REGION = "ap-south-1"
 MODEL_ID = "meta.llama3-8b-instruct-v1:0"
 
@@ -13,194 +27,48 @@ client = boto3.client(
     region_name=REGION
 )
 
-# --------------------------------------------------
-# Tool Selection
-# --------------------------------------------------
+# ----------------------------------------------------
+# Execute Tool
+# ----------------------------------------------------
+def execute_tool(tool_name):
 
-def select_tool(user_question):
+    if tool_name == "get_all_pods":
+        return get_all_pods()
 
-    system_prompt = """
-You are a Kubernetes Tool Selector.
+    return None
 
-Your ONLY task is to select the correct tool.
-Any user request for creating any thing like pod , deployment svc etc k8s resource you must deny
-=========================================
-AVAILABLE TOOL
-=========================================
 
-Tool Name:
-get_all_pods
+# ----------------------------------------------------
+# Response Generator
+# ----------------------------------------------------
+SYSTEM_PROMPT = """
+You are an experienced Kubernetes Administrator.
 
-Description:
-Returns Kubernetes POD information from ALL namespaces.
+You have received verified structured data from a Kubernetes tool.
 
-This tool ONLY works for PODS.
+Rules:
 
-It CANNOT answer questions about:
+- Answer ONLY using the tool output.
+- Never invent or assume information.
+- If the requested information is unavailable, clearly state that.
+- Explain the results in a professional manner.
+- Use markdown bullet points or tables whenever appropriate.
+- Do not mention JSON unless the user explicitly asks for it.
+"""
 
-- Nodes
-- ConfigMaps
-- Secrets
-- Deployments
-- StatefulSets
-- DaemonSets
-- Services
-- Ingress
-- PVC
-- PV
-- StorageClasses
-- Jobs
-- CronJobs
-- Namespaces
-- Events
-- Cluster
-- Kubernetes version
-- Helm
-- RBAC
 
-=========================================
-USE get_all_pods ONLY FOR
-=========================================
+def summarize(user_question, tool_output):
 
-- show pods
-- list pods
-- running pods
-- pod status
-- pod names
-- pod namespace
-- pod IP
-- pod node
-- pod restart count
-- failed pods
-- completed pods
-- pending pods
-- pods in namespace xyz
+    user_prompt = f"""
+User Question:
 
-=========================================
-MUST RETURN NO_TOOL FOR
-=========================================
+{user_question}
 
-- show nodes
-- running nodes
-- list nodes
-- node status
+Tool Output:
 
-- list configmaps
-- config map details
-- show configmaps
+{json.dumps(tool_output, indent=2)}
 
-- list deployments
-- deployment status
-
-- services
-- ingress
-
-- secrets
-
-- namespaces
-
-- storage classes
-
-- pvc
-
-- pv
-
-- cluster information
-
-- kubernetes version
-
-=========================================
-EXAMPLES
-=========================================
-
-Question:
-show pods
-
-Answer:
-get_all_pods
-
-Question:
-running pods
-
-Answer:
-get_all_pods
-
-Question:
-create or creating pod request or any write query about pod or any k8s resources 
-
-Answer:
-NO_TOOL 
-
-Question:
-pod restart count
-
-Answer:
-get_all_pods
-
-Question:
-pods in kube-system
-
-Answer:
-get_all_pods
-
-Question:
-show nodes
-
-Answer:
-NO_TOOL
-
-Question:
-running nodes
-
-Answer:
-NO_TOOL
-
-Question:
-print all config map details
-
-Answer:
-NO_TOOL
-
-Question:
-show deployments
-
-Answer:
-NO_TOOL
-
-Question:
-show services
-
-Answer:
-NO_TOOL
-
-Question:
-show namespaces
-
-Answer:
-NO_TOOL
-
-=========================================
-RULES
-=========================================
-
-1. Return exactly one value.
-
-2. If the question is about PODS:
-
-get_all_pods
-
-3. Otherwise:
-
-NO_TOOL
-
-4. Never explain.
-
-5. Never answer the question.
-
-6. Output ONLY one of:
-
-get_all_pods
-NO_TOOL
+Generate the best possible answer for the user using ONLY the tool output.
 """
 
     try:
@@ -211,7 +79,7 @@ NO_TOOL
 
             system=[
                 {
-                    "text": system_prompt
+                    "text": SYSTEM_PROMPT
                 }
             ],
 
@@ -220,7 +88,7 @@ NO_TOOL
                     "role": "user",
                     "content": [
                         {
-                            "text": user_question
+                            "text": user_prompt
                         }
                     ]
                 }
@@ -228,44 +96,46 @@ NO_TOOL
 
             inferenceConfig={
                 "temperature": 0,
-                "topP": 0.1,
-                "maxTokens": 10
+                "topP": 0.9,
+                "maxTokens": 512
             }
 
         )
 
-        answer = (
-            response["output"]["message"]["content"][0]["text"]
-            .strip()
-            .replace(".", "")
-            .replace("`", "")
-            .split()[0]
-        )
-
-        print("\nLLM Seletected Tool Response :", answer)
-
-        if answer == "get_all_pods":
-            return "get_all_pods"
-
-        return "NO_TOOL"
+        return response["output"]["message"]["content"][0]["text"]
 
     except ClientError as e:
-        raise Exception(e.response["Error"]["Message"])
+        raise RuntimeError(e.response["Error"]["Message"])
 
 
-# --------------------------------------------------
-# Test
-# --------------------------------------------------
+# ----------------------------------------------------
+# Main
+# ----------------------------------------------------
+def main():
+
+    user_question = input("\nAsk : ")
+
+    tool_name = select_tool(user_question)
+
+    print(f"\nSelected Tool : {tool_name}")
+
+    if tool_name == "NO_TOOL":
+        print("\nNo suitable tool found.")
+        return
+
+    tool_output = execute_tool(tool_name)
+
+    print("\nGenerating Response...\n")
+
+    answer = summarize(
+        user_question,
+        tool_output
+    )
+
+    print("=" * 80)
+    print(answer)
+    print("=" * 80)
+
 
 if __name__ == "__main__":
-
-    while True:
-
-        question = input("\nAsk : ")
-
-        if question.lower() == "exit":
-            break
-
-        tool = select_tool(question)
-
-        print("\nSelected Tool :", tool)
+    main()
