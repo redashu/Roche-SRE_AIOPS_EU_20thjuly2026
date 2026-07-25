@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp — Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+
+<div class="page">
+
+    <nav class="navbar">
+        <span class="nav-brand">ChatApp</span>
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit" class="btn-logout">Sign out</button>
+        </form>
+    </nav>
+
+    <div class="chat-area" id="chat_area">
+        {% if history %}
+            {% for msg in history %}
+                {% if msg.role == 'user' %}
+                <div class="bubble bubble-user">
+                    <span class="bubble-label">You</span>
+                    <p>{{ msg.content }}</p>
+                </div>
+                {% else %}
+                <div class="bubble bubble-ai">
+                    <span class="bubble-label">AI</span>
+                    <div class="prose">{{ msg.html | safe }}</div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <p>Ask me anything — I'm here to help ✦</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error-banner">{{ error }}</div>
+        {% endif %}
+    </div>
+
+    <div class="input-dock">
+        <form action="/home" method="POST" class="input-form" id="chat-form">
+            <div class="search-bar">
+                <textarea
+                    class="search-input"
+                    id="user_input"
+                    name="user_input"
+                    placeholder="Type a message… (Shift+Enter for new line)"
+                    autocomplete="off"
+                    rows="1"
+                    required
+                ></textarea>
+                <div class="input-actions">
+                    <button
+                        type="button"
+                        class="mic-btn"
+                        id="mic_btn"
+                        onclick="startRecorder()"
+                        title="Voice input"
+                        aria-label="Start voice input"
+                    >
+                        <img src="{{ url_for('static', filename='m.jpg') }}" alt="Mic">
+                    </button>
+                    <button type="submit" class="btn-submit">Send →</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // Auto-scroll chat to bottom
+    const chatArea = document.getElementById('chat_area');
+    if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+
+    // Auto-grow textarea
+    const textarea = document.getElementById('user_input');
+
+    function autoGrow() {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 180) + 'px';
+    }
+
+    textarea.addEventListener('input', autoGrow);
+
+    // Enter = submit, Shift+Enter = new line
+    textarea.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (textarea.value.trim()) {
+                document.getElementById('chat-form').submit();
+            }
+        }
+    });
+
+    // Voice recorder
+    function startRecorder() {
+        const btn = document.getElementById('mic_btn');
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { alert('Speech recognition not supported. Use Chrome.'); return; }
+        const rec = new SR();
+        rec.lang = 'en-GB';
+        btn.classList.add('recording');
+        rec.onresult = e => {
+            textarea.value = e.results[0][0].transcript;
+            autoGrow();
+            btn.classList.remove('recording');
+        };
+        rec.onerror = rec.onend = () => btn.classList.remove('recording');
+        rec.start();
+    }
+</script>
+</body>
+</html>

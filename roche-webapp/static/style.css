@@ -1,0 +1,229 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --pink: #f74781;
+    --pink-dark: #c2295e;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --surface: #ffffff;
+    --radius: 12px;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #0a0a14;
+}
+
+/* ── LEFT: AI visual panel ── */
+.bg-visual {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a14 0%, #120820 50%, #0d0d1a 100%);
+}
+
+/* Neural network canvas fills the panel */
+#ai-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Subtle radial glow behind brand block */
+.bg-visual::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to top, rgba(10,10,20,0.95) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.brand-block {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+/* AI orbit icon */
+.brand-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 1.25rem;
+    animation: spin-slow 12s linear infinite;
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.brand-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(90deg, #ffffff 0%, #f74781 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-tagline {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    opacity: 0.6;
+    margin-bottom: 1.75rem;
+}
+
+/* AI feature pill tags */
+.ai-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ai-tags span {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(247,71,129,0.4);
+    color: rgba(247,71,129,0.9);
+    background: rgba(247,71,129,0.08);
+}
+
+/* ── RIGHT: login panel ── */
+.login-panel {
+    width: 480px;
+    min-width: 420px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2.5rem;
+}
+
+.login-inner {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-header {
+    margin-bottom: 2.5rem;
+}
+
+.login-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.login-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text);
+}
+
+.error-msg {
+    background: #fff0f4;
+    border: 1px solid #fca5c0;
+    color: #b91c4a;
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.field-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+}
+
+.field-group input {
+    height: 48px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: #fafafa;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.field-group input::placeholder { color: #c4c9d4; }
+
+.field-group input:focus {
+    border-color: var(--pink);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(247,71,129,0.12);
+}
+
+.btn-login {
+    margin-top: 0.5rem;
+    height: 52px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--pink);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-login:hover  { background: var(--pink-dark); }
+.btn-login:active { transform: scale(0.98); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    body { flex-direction: column; overflow: auto; }
+    .bg-visual { flex: none; height: 280px; padding: 2rem 1.5rem; }
+    .brand-name { font-size: 1.75rem; }
+    .login-panel { width: 100%; min-width: unset; padding: 2.5rem 1.5rem 3rem; }
+}

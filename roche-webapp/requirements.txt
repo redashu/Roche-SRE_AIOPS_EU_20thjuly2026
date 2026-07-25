@@ -1,0 +1,4 @@
+flask
+openai
+markdown2
+dotenv
