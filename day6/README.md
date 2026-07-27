@@ -77,3 +77,9 @@ tools
 └── tool_selector.py
 
 ```
+
+## adding orchestration layer in AI app
+
+<img src="llm2.png">
+
+
