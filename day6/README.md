@@ -110,3 +110,44 @@ project-orchestrator/
 │       │   ├── all_services.cpython-313.pyc
 ```
 
+### running and testing 
+
+```
+
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ cd project-orchestrator/
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ ls
+ai  investigator
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ python3 ai/final_response_summary.py 
+
+Kubernetes AI Assistant
+Type 'exit' to quit.
+
+Ask : show me high cpu usage top 3 pods
+
+LLM Response : get_pod_resource_usage
+
+Selected Tool : get_pod_resource_usage
+
+================================================================================
+
+
+Here are the top 3 pods with high CPU usage:
+
+* `datadog-agent-7vsqr` in the `datadog` namespace, using `39m` CPU
+* `datadog-agent-wj4br` in the `datadog` namespace, using `36m` CPU
+* `datadog-agent-4rnkz` in the `datadog` namespace, using `34m` CPU
+================================================================================
+Ask : exit
+
+Goodbye!
+
+```
+
+### Understanding workflow 
+
+<img src="workf.png">
+
+### RAG process to let the LLM know about your Private info 
+
+<img src="rag1.png">
