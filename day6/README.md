@@ -83,3 +83,30 @@ tools
 <img src="llm2.png">
 
 
+### creating new structure 
+
+```
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ ls
+Roche-SRE_AIOPS_EU_20thjuly2026  bedrock-converse.py    llm_chat.py         nova-chat.py          roche-webapp
+ashu-ui-app                      invoke.py              model_inference.py  nova_model.py         test-aws-bedrock.py
+bedrock-converse-mem.py          llm-copilot-roche-app  my-chat-app         project-orchestrator
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ tree  project-orchestrator/
+project-orchestrator/
+├── ai
+└── investigator
+
+2 directories, 0 files
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ cp -rf   llm-copilot-roche-app/final_response_summary.py  project-orchestrator/ai/
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ cp -rf   llm-copilot-roche-app/tools  project-orchestrator/ai/
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 ashu-roche-codes]$ tree  project-orchestrator/
+project-orchestrator/
+├── ai
+│   ├── final_response_summary.py
+│   └── tools
+│       ├── __pycache__
+│       │   ├── all_nodes.cpython-313.pyc
+│       │   ├── all_pods.cpython-313.pyc
+│       │   ├── all_services.cpython-313.pyc
+```
+
