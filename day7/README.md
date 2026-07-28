@@ -15,3 +15,24 @@
 ## RAG process Understanding 
 
 <img src="rag2.png">
+
+### making directory structure 
+
+```
+ec2-user@ip-172-31-27-32 ashu-roche-codes]$ mkdir  RAG
+[ec2-user@ip-172-31-27-32 ashu-roche-codes]$ touch  RAG/loader.py
+[ec2-user@ip-172-31-27-32 ashu-roche-codes]$ 
+[ec2-user@ip-172-31-27-32 ashu-roche-codes]$ cp -rf  /tmp/knowledge/  RAG/
+[ec2-user@ip-172-31-27-32 ashu-roche-codes]$ 
+[ec2-user@ip-172-31-27-32 ashu-roche-codes]$ ls RAG/
+knowledge  loader.py
+[ec2-user@ip-172-31-27-32 ashu-roche-codes]$ 
+
+
+
+```
+### installing yaml / bs4 
+
+```
+pip3 install pyyaml  bs4
+```
