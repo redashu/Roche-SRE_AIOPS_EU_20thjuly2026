@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Troubleshooting Guide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+        <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="deployment.html">Deployment</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<h1>Kubernetes Troubleshooting Guide</h1>
+
+<p>
+This guide provides common Kubernetes issues, their possible causes,
+investigation steps, and recommended resolutions.
+</p>
+
+<hr>
+
+<h2>1. CrashLoopBackOff</h2>
+
+<h3>Description</h3>
+
+<p>
+The container starts successfully but exits repeatedly. Kubernetes keeps
+restarting the container with an increasing delay between attempts.
+</p>
+
+<h3>Possible Causes</h3>
+
+<ul>
+<li>Application startup failure</li>
+<li>Invalid configuration</li>
+<li>Missing Secret or ConfigMap</li>
+<li>Database connection failure</li>
+<li>Failed liveness probe</li>
+<li>Out Of Memory (OOMKilled)</li>
+</ul>
+
+<h3>Investigation</h3>
+
+<pre>
+kubectl get pods
+
+kubectl describe pod POD_NAME
+
+kubectl logs POD_NAME
+
+kubectl logs POD_NAME --previous
+</pre>
+
+<h3>Resolution</h3>
+
+<ul>
+<li>Review application logs.</li>
+<li>Validate configuration.</li>
+<li>Check Secrets and ConfigMaps.</li>
+<li>Verify dependent services.</li>
+<li>Fix application startup errors.</li>
+</ul>
+
+<hr>
+
+<h2>2. ImagePullBackOff</h2>
+
+<h3>Description</h3>
+
+<p>
+Kubernetes cannot download the container image from the registry.
+</p>
+
+<h3>Possible Causes</h3>
+
+<ul>
+<li>Incorrect image name</li>
+<li>Incorrect image tag</li>
+<li>Private registry authentication failure</li>
+<li>Container registry unavailable</li>
+</ul>
+
+<h3>Investigation</h3>
+
+<pre>
+kubectl describe pod POD_NAME
+</pre>
+
+<h3>Resolution</h3>
+
+<ul>
+<li>Verify image name.</li>
+<li>Verify image tag.</li>
+<li>Configure imagePullSecrets.</li>
+<li>Check registry connectivity.</li>
+</ul>
+
+<hr>
+
+<h2>3. Pending Pod</h2>
+
+<h3>Description</h3>
+
+<p>
+The Pod has been created but has not yet been scheduled onto a node.
+</p>
+
+<h3>Possible Causes</h3>
+
+<ul>
+<li>Insufficient CPU</li>
+<li>Insufficient Memory</li>
+<li>Node Selector mismatch</li>
+<li>Taints and Tolerations</li>
+<li>Persistent Volume unavailable</li>
+</ul>
+
+<h3>Investigation</h3>
+
+<pre>
+kubectl describe pod POD_NAME
+
+kubectl get nodes
+</pre>
+
+<h3>Resolution</h3>
+
+<ul>
+<li>Add cluster resources.</li>
+<li>Reduce resource requests.</li>
+<li>Check scheduling constraints.</li>
+</ul>
+
+<hr>
+
+<h2>4. OOMKilled</h2>
+
+<h3>Description</h3>
+
+<p>
+The container exceeded its configured memory limit and was terminated by
+the operating system.
+</p>
+
+<h3>Possible Causes</h3>
+
+<ul>
+<li>Memory leak</li>
+<li>Memory limit too low</li>
+<li>Unexpected workload spike</li>
+</ul>
+
+<h3>Investigation</h3>
+
+<pre>
+kubectl describe pod POD_NAME
+
+kubectl top pod
+</pre>
+
+<h3>Resolution</h3>
+
+<ul>
+<li>Increase memory limits.</li>
+<li>Optimize application memory usage.</li>
+<li>Monitor memory consumption.</li>
+</ul>
+
+<hr>
+
+<h2>5. Service Not Accessible</h2>
+
+<h3>Description</h3>
+
+<p>
+The application is running but cannot be reached through the Kubernetes
+Service.
+</p>
+
+<h3>Possible Causes</h3>
+
+<ul>
+<li>Incorrect selector</li>
+<li>TargetPort mismatch</li>
+<li>Application not listening</li>
+<li>Network Policy restriction</li>
+</ul>
+
+<h3>Investigation</h3>
+
+<pre>
+kubectl get svc
+
+kubectl describe svc SERVICE_NAME
+
+kubectl get endpoints
+</pre>
+
+<h3>Resolution</h3>
+
+<ul>
+<li>Verify labels and selectors.</li>
+<li>Check target port.</li>
+<li>Verify application port.</li>
+</ul>
+
+<hr>
+
+<h2>6. Pod Restarting Frequently</h2>
+
+<h3>Investigation</h3>
+
+<pre>
+kubectl get pods
+
+kubectl describe pod POD_NAME
+
+kubectl logs POD_NAME --previous
+</pre>
+
+<h3>Possible Causes</h3>
+
+<ul>
+<li>Application crashes</li>
+<li>Failed health checks</li>
+<li>OOMKilled</li>
+<li>Configuration errors</li>
+</ul>
+
+<hr>
+
+<h2>7. Useful Troubleshooting Commands</h2>
+
+<pre>
+kubectl get pods
+
+kubectl get deployments
+
+kubectl get services
+
+kubectl describe pod POD_NAME
+
+kubectl describe deployment DEPLOYMENT_NAME
+
+kubectl logs POD_NAME
+
+kubectl logs POD_NAME --previous
+
+kubectl exec -it POD_NAME -- /bin/sh
+
+kubectl rollout status deployment DEPLOYMENT_NAME
+
+kubectl rollout restart deployment DEPLOYMENT_NAME
+
+kubectl top pod
+
+kubectl top node
+
+kubectl get events --sort-by=.metadata.creationTimestamp
+</pre>
+
+<hr>
+
+<h2>General Troubleshooting Workflow</h2>
+
+<pre>
+
+Application Not Working
+
+        │
+
+        ▼
+
+Check Pod Status
+
+        │
+
+        ▼
+
+Describe Pod
+
+        │
+
+        ▼
+
+Check Events
+
+        │
+
+        ▼
+
+Check Logs
+
+        │
+
+        ▼
+
+Identify Root Cause
+
+        │
+
+        ▼
+
+Apply Fix
+
+        │
+
+        ▼
+
+Verify Application
+
+</pre>
+
+<hr>
+
+<a href="index.html">Home</a>
+
+</body>
+
+</html>

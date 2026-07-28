@@ -11,3 +11,7 @@
 ## ORchestrator with realtime info + RAG 
 
 <img src="rag1.png">
+
+## RAG process Understanding 
+
+<img src="rag2.png">

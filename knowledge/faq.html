@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Frequently Asked Questions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="deployment.html">Deployment</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<h1>Frequently Asked Questions (FAQ)</h1>
+
+<hr>
+
+<h2>General Questions</h2>
+
+<h3>1. What is Payment Portal?</h3>
+<p>
+Payment Portal is a sample Kubernetes application used for learning
+Docker, Kubernetes, Amazon Bedrock, Generative AI, and Retrieval
+Augmented Generation (RAG).
+</p>
+
+<h3>2. Which web server is used?</h3>
+<p>
+The application is hosted using the NGINX web server.
+</p>
+
+<h3>3. Which platform hosts this application?</h3>
+<p>
+The application runs inside a Kubernetes cluster.
+</p>
+
+<hr>
+
+<h2>Kubernetes Questions</h2>
+
+<h3>4. How many Pods are running?</h3>
+<p>
+Run the following command:
+</p>
+
+<pre>
+kubectl get pods
+</pre>
+
+<h3>5. How do I list all Deployments?</h3>
+
+<pre>
+kubectl get deployments
+</pre>
+
+<h3>6. How do I check all Services?</h3>
+
+<pre>
+kubectl get services
+</pre>
+
+<h3>7. How do I view application logs?</h3>
+
+<pre>
+kubectl logs POD_NAME
+</pre>
+
+<h3>8. How do I describe a Pod?</h3>
+
+<pre>
+kubectl describe pod POD_NAME
+</pre>
+
+<h3>9. How do I restart a Deployment?</h3>
+
+<pre>
+kubectl rollout restart deployment payment-portal
+</pre>
+
+<p>
+Restarting a Deployment performs a rolling restart of its Pods without
+changing the Deployment specification. :contentReference[oaicite:0]{index=0}
+</p>
+
+<h3>10. How do I scale the application?</h3>
+
+<pre>
+kubectl scale deployment payment-portal --replicas=3
+</pre>
+
+<hr>
+
+<h2>Troubleshooting</h2>
+
+<h3>11. What should I do if the Pod is in CrashLoopBackOff?</h3>
+
+<p>
+
+Check:
+
+</p>
+
+<ul>
+
+<li>Application logs</li>
+
+<li>Container configuration</li>
+
+<li>Secrets</li>
+
+<li>ConfigMaps</li>
+
+<li>Environment variables</li>
+
+</ul>
+
+<h3>12. What causes ImagePullBackOff?</h3>
+
+<p>
+
+Possible reasons include:
+
+</p>
+
+<ul>
+
+<li>Incorrect image name</li>
+
+<li>Wrong image tag</li>
+
+<li>Private registry authentication failure</li>
+
+<li>Image does not exist</li>
+
+</ul>
+
+<h3>13. Why is my Pod in Pending state?</h3>
+
+<p>
+
+Common reasons include:
+
+</p>
+
+<ul>
+
+<li>Insufficient CPU</li>
+
+<li>Insufficient Memory</li>
+
+<li>Node scheduling constraints</li>
+
+<li>Persistent Volume not available</li>
+
+</ul>
+
+Pods remain in the <strong>Pending</strong> phase until Kubernetes can successfully schedule them to a node and start their containers. :contentReference[oaicite:1]{index=1}
+
+<h3>14. Why is my Service not accessible?</h3>
+
+<p>
+
+Verify:
+
+</p>
+
+<ul>
+
+<li>Service selector</li>
+
+<li>Target Port</li>
+
+<li>Pod labels</li>
+
+<li>Running Pods</li>
+
+<li>Application listening port</li>
+
+</ul>
+
+Debugging a Service usually involves checking selectors, endpoints, ports, and connectivity to the backing Pods. :contentReference[oaicite:2]{index=2}
+
+<hr>
+
+<h2>Operations</h2>
+
+<h3>15. How do I execute commands inside a Pod?</h3>
+
+<pre>
+kubectl exec -it POD_NAME -- /bin/sh
+</pre>
+
+<h3>16. How do I list all Kubernetes resources?</h3>
+
+<pre>
+kubectl get all
+</pre>
+
+<h3>17. How do I check rollout status?</h3>
+
+<pre>
+kubectl rollout status deployment payment-portal
+</pre>
+
+<h3>18. How do I rollback a Deployment?</h3>
+
+<pre>
+kubectl rollout undo deployment payment-portal
+</pre>
+
+Kubernetes Deployments support rollout status, restart, history, and rollback operations through the `kubectl rollout` command family. :contentReference[oaicite:3]{index=3}
+
+<hr>
+
+<h2>Generative AI Questions</h2>
+
+<h3>19. What is Retrieval Augmented Generation (RAG)?</h3>
+
+<p>
+RAG combines semantic document retrieval with a Large Language Model to
+generate answers using enterprise knowledge.
+</p>
+
+<h3>20. Why is this documentation important?</h3>
+
+<p>
+These pages will later be indexed into a vector database so an AI
+assistant can answer questions using semantic search instead of relying
+only on the model's pretrained knowledge.
+</p>
+
+<hr>
+
+<a href="index.html">Home</a>
+
+</body>
+
+</html>

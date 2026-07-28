@@ -1,0 +1,189 @@
+/* --------------------------------------------------
+   Global
+-------------------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* --------------------------------------------------
+   Headings
+-------------------------------------------------- */
+
+h1 {
+    color: #0d47a1;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #0d47a1;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #1565c0;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #1976d2;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* --------------------------------------------------
+   Paragraph
+-------------------------------------------------- */
+
+p {
+    margin-bottom: 15px;
+}
+
+/* --------------------------------------------------
+   Lists
+-------------------------------------------------- */
+
+ul {
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* --------------------------------------------------
+   Table
+-------------------------------------------------- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ccc;
+}
+
+th {
+    background: #1565c0;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+}
+
+/* --------------------------------------------------
+   Code Block
+-------------------------------------------------- */
+
+pre {
+    background: #272822;
+    color: #f8f8f2;
+    padding: 15px;
+    overflow-x: auto;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+/* --------------------------------------------------
+   Horizontal Line
+-------------------------------------------------- */
+
+hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* --------------------------------------------------
+   Navigation
+-------------------------------------------------- */
+
+nav {
+    background: #1565c0;
+    padding: 12px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------
+   Links
+-------------------------------------------------- */
+
+a {
+    color: #1565c0;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------
+   Footer
+-------------------------------------------------- */
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #777;
+    border-top: 1px solid #ddd;
+}
+
+/* --------------------------------------------------
+   Responsive
+-------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 15px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    nav a {
+        display: block;
+        margin: 10px 0;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+}

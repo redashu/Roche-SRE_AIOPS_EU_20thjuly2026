@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Application Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="deployment.html">Deployment</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+</nav>
+    <h1>Payment Portal Architecture</h1>
+
+    <hr>
+
+    <h2>Overview</h2>
+
+    <p>
+        Payment Portal is deployed as a containerized application on a Kubernetes cluster.
+        The application is managed by a Deployment object and exposed to users through
+        a Kubernetes Service.
+    </p>
+
+    <hr>
+
+    <h2>Architecture Diagram</h2>
+
+<pre>
+
+                +----------------------+
+                |      Web Browser     |
+                +----------+-----------+
+                           |
+                           |
+                    HTTP Request
+                           |
+                           v
+                +----------------------+
+                |   NodePort Service   |
+                +----------+-----------+
+                           |
+                           |
+                           v
+                +----------------------+
+                |      Deployment      |
+                +----------+-----------+
+                           |
+                 -----------------------
+                 |                     |
+                 | Creates & Manages   |
+                 |                     |
+                 -----------------------
+                           |
+                           v
+                +----------------------+
+                |      NGINX Pod       |
+                +----------+-----------+
+                           |
+                           |
+                           v
+                +----------------------+
+                |   Static HTML Files  |
+                +----------------------+
+
+</pre>
+
+    <hr>
+
+    <h2>Application Components</h2>
+
+    <table border="1" cellpadding="8">
+
+        <tr>
+            <th>Component</th>
+            <th>Description</th>
+        </tr>
+
+        <tr>
+            <td>Browser</td>
+            <td>User accesses the web application.</td>
+        </tr>
+
+        <tr>
+            <td>NodePort Service</td>
+            <td>Exposes the application outside the Kubernetes cluster.</td>
+        </tr>
+
+        <tr>
+            <td>Deployment</td>
+            <td>Maintains the desired number of running Pods and manages updates.</td>
+        </tr>
+
+        <tr>
+            <td>Pod</td>
+            <td>Runs the NGINX container hosting the website.</td>
+        </tr>
+
+        <tr>
+            <td>NGINX</td>
+            <td>Serves static HTML pages.</td>
+        </tr>
+
+    </table>
+
+    <hr>
+
+    <h2>Request Flow</h2>
+
+<pre>
+
+Browser
+   |
+   v
+NodePort Service
+   |
+   v
+Deployment
+   |
+   v
+Pod
+   |
+   v
+NGINX
+   |
+   v
+HTML Page
+   |
+   v
+Browser Response
+
+</pre>
+
+    <hr>
+
+    <h2>Kubernetes Resources</h2>
+
+    <ul>
+        <li>Namespace : default</li>
+        <li>Deployment : payment-portal</li>
+        <li>Service : payment-service</li>
+        <li>Pod : payment-portal-xxxxx</li>
+        <li>Container : nginx</li>
+    </ul>
+
+    <hr>
+
+    <h2>High Availability</h2>
+
+    <p>
+        The Deployment continuously monitors the application. If a Pod fails,
+        Kubernetes automatically creates a replacement Pod to maintain the desired
+        application state. Services provide a stable endpoint for clients even
+        though Pods are ephemeral and may be recreated with different IP addresses. :contentReference[oaicite:0]{index=0}
+    </p>
+
+    <hr>
+
+    <h2>Future Enhancements</h2>
+
+    <ul>
+        <li>Add PostgreSQL Database</li>
+        <li>Add REST API</li>
+        <li>Add ConfigMap</li>
+        <li>Add Secret</li>
+        <li>Add Ingress</li>
+        <li>Add Horizontal Pod Autoscaler</li>
+        <li>Add Monitoring</li>
+    </ul>
+
+    <hr>
+
+    <a href="index.html">Home</a>
+
+</body>
+
+</html>

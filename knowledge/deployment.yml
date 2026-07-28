@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: ashuwebapp
+    spec:
+      containers:
+      - image: dockerashu/payment-portal:v1
+        name: payment-portal
+        resources: {}
+status: {}
