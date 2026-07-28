@@ -7,3 +7,7 @@
 ## Understanding LLM model tool / app security concerns 
 
 <img src="sec1.png">
+
+## ORchestrator with realtime info + RAG 
+
+<img src="rag1.png">
