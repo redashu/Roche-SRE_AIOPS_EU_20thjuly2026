@@ -9,3 +9,7 @@
 
 <img src="rag1.png">
 
+
+### using bedrock agent runtime api engine 
+
+<img src="rag2.png">
