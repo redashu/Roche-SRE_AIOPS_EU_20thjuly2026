@@ -128,3 +128,9 @@ Hellooo 😄 I’m doing well — thanks for asking!
 How are *you* doing?
 
 ```
+
+
+### Adjusting current project to USE RAG 
+
+<img src="rag1.png">
+
