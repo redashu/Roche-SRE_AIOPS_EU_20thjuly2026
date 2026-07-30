@@ -75,15 +75,31 @@ def load_chat_history(chat_session_id):
     history = []
 
     for row in cursor.fetchall():
-        history.append({
-            "role": row["role"],
-            "content": row["message"]
-        })
+
+        if row["role"] == "assistant":
+            history.append({
+                "role": "assistant",
+                "content": row["message"],
+                "html": markdown2.markdown(
+                    row["message"],
+                    extras=[
+                        "fenced-code-blocks",
+                        "tables",
+                        "strike",
+                        "break-on-newline"
+                    ]
+                )
+            })
+        else:
+            history.append({
+                "role": "user",
+                "content": row["message"]
+            })
 
     cursor.close()
 
     return history
-    
+
 def save_message(chat_session_id, role, message):
     cursor = db.cursor()
 
@@ -191,10 +207,7 @@ def home():
 
             except Exception as e:
                 error = f"OpenAI error: {str(e)}"
-    print("========== HISTORY ==========")
-    for msg in session.get("history", []):
-        print(msg)
-    print("=============================")
+
     return render_template(
         'home.html',
         user_input=user_input,

@@ -29,7 +29,7 @@
                 {% else %}
                 <div class="bubble bubble-ai">
                     <span class="bubble-label">AI</span>
-                    <div class="prose">{{ msg.html | safe }}</div>
+                    <div class="prose">{{ msg.content }}</div>
                 </div>
                 {% endif %}
             {% endfor %}
@@ -78,7 +78,16 @@
 <script>
     // Auto-scroll chat to bottom
     const chatArea = document.getElementById('chat_area');
-    if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+
+function scrollToBottom() {
+    if (chatArea) {
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+}
+
+window.onload = function () {
+    setTimeout(scrollToBottom, 100);
+};
 
     // Auto-grow textarea
     const textarea = document.getElementById('user_input');

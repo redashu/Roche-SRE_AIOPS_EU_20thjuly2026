@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roche-chatapp
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: roche-chatapp
+
+  template:
+    metadata:
+      labels:
+        app: roche-chatapp
+
+    spec:
+      containers:
+      - name: roche-chatapp
+        image: dockerashu/chatapp:rochev4
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 5015
+
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_PORT
+
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_NAME
+
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: DB_USER
+
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: DB_PASSWORD
+
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: OPENAI_API_KEY

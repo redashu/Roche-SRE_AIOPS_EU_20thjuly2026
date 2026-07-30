@@ -2,3 +2,5 @@ flask
 openai
 markdown2
 dotenv
+mysql-connector-python
+pymysql
