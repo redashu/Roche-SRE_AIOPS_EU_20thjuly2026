@@ -24,3 +24,107 @@ Skipping 'goose configure', you may need to run this manually later
 
 ## updates
 ```
+
+### check info 
+
+```
+[ec2-user@ip-172-31-27-32 ~]$ goose info 
+goose Version:
+  Version:                  1.45.0
+
+Paths:
+Config dir:              /home/ec2-user/.config/goose                              missing (can create)
+Config yaml:             /home/ec2-user/.config/goose/config.yaml                  missing (can create)
+Sessions DB (sqlite):    /home/ec2-user/.local/share/goose/sessions/sessions.db    missing (can create)
+Logs dir:                /home/ec2-user/.local/state/goose/logs                    
+[ec2-user@ip-172-31-27-32 ~]$ 
+
+```
+### configure Goose 
+
+```
+c2-user@ip-172-31-27-32 ~]$ goose configure 
+
+Welcome to goose! Let's get you set up.
+  you can rerun this command later to update your configuration
+
+
+Help improve goose
+
+Would you like to help improve goose by sharing anonymous usage data?
+This helps us understand how goose is used and identify areas for improvement.
+
+What we collect:
+  • Operating system, version, and architecture
+  • goose version and install method
+  • Provider and model used
+  • Extensions and tool usage counts (names only)
+  • Session metrics (duration, interaction count, token usage)
+  • Error types (e.g., "rate_limit", "auth" - no details)
+
+We never collect your conversations, code, tool arguments, error messages,
+or any personal data. You can change this anytime with 'goose configure'.
+
+◇  Share anonymous usage data to help improve goose?
+│  No 
+│
+●  Telemetry disabled. You can enable it anytime in settings.
+│  
+
+┌   goose-configure 
+│
+◇  How would you like to set up your provider?
+│  Manual Configuration 
+│
+◇  Which model provider should we use?
+│  Search all providers... 
+│
+◇  Search model providers
+│  openai
+│
+◇  Which model provider should we use?
+│  OpenAI 
+│
+◇  Would you like to set OPENAI_API_KEY? (optional)
+│  Yes 
+│
+◇  Enter value for OPENAI_API_KEY
+│  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪
+│
+◇  Would you like to configure advanced settings?
+│  No 
+│
+◇  Model fetch complete                                                                                                                     │                                                                                                                                           ◆  Select a model:
+│  ● Search all models... (Search complete model list)
+│  ○ gpt-4o 
+│  ○ gpt-4o-mini 
+│  ○ gpt-4.1 
+◆  Select a model:
+│  ○ Search all models... 
+
+```
+### checking it 
+
+```
+[ec2-user@ip-172-31-27-32 ~]$ goose info 
+goose Version:
+  Version:                  1.45.0
+
+Paths:
+Config dir:              /home/ec2-user/.config/goose                              
+Config yaml:             /home/ec2-user/.config/goose/config.yaml                  
+Sessions DB (sqlite):    /home/ec2-user/.local/share/goose/sessions/sessions.db    
+Logs dir:                /home/ec2-user/.local/state/goose/logs                    
+[ec2-user@ip-172-31-27-32 ~]$ goose info -v
+
+====>
+
+goose run  -t  "Helloooo , how are u ?"
+
+    __( O)>  ● new session · openai gpt-5.4-mini
+   \____)    20260730_2 · /home/ec2-user
+     L L     goose is ready
+Hellooo 😄 I’m doing well — thanks for asking!  
+How are *you* doing?
+
+```
