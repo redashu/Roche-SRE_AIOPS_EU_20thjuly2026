@@ -134,3 +134,23 @@ How are *you* doing?
 
 <img src="rag1.png">
 
+### app options 
+
+```
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ ls
+ai  investigator  rag
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ ls  ai/
+__pycache__  final_response_summary.py  tool_result_summary.py  tools
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ ls  rag/
+__init__.py  __pycache__  rag_chat_bedrock.py
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ 
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ ls  investigator/
+__init__.py  __pycache__  executor.py  orchestrator.py  planner.py  planner_prompt.py  reducer.py  router.py  router_prompt.py
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ ls ai/tools/
+__pycache__         all_nodes.py  all_services.py   get_cluster_events.py  get_pod_resource_usage.py  system_prompt.py  tool_selector.py
+all_deployments.py  all_pods.py   describe_pods.py  get_pod_logs.py        get_unhealthy_pods.py      tool_registry.py
+(ashu-roche-env) [ec2-user@ip-172-31-27-32 project-orchestrator]$ 
+
+
+```
