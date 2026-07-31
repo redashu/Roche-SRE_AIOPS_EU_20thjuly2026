@@ -61,5 +61,8 @@ llama3.2:1b    baf6a787fdff    1.5 GB    100% GPU     4096       4 minutes from 
 <img src="aj.png">
 
 
+### project integration 
 
+
+<img src="aj1.png">
 
