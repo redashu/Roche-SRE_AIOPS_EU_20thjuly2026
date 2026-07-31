@@ -56,6 +56,10 @@ llama3.2:1b    baf6a787fdff    1.5 GB    100% GPU     4096       4 minutes from 
 
 
 ```
+### Building our agents 
+
+<img src="aj.png">
+
 
 
 
